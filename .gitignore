@@ -1,0 +1,34 @@
+# Protobuf dir
+./pb/*
+
+# Test binary, built with `go test -c`
+*.test
+
+# Built binary for this project
+proto-order-data
+main
+
+# misc files
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.out
+*.txt
+*.log
+*.run
+.run
+
+# IDE directories
+.idea
+.idea/
+.vscode
+
+# Dependency directories (remove the comment below to include it)
+vendor
+vendor/
+.env
+venv
+venv/
+
