@@ -15,7 +15,7 @@ func TestCoinbaseProVWAPRouter(t *testing.T) {
 	v := VWAPRouter{}
 	go util.Signal(v.Stop)
 	go func() {
-		tkr := time.NewTicker(10 * time.Minute)
+		tkr := time.NewTicker(9 * time.Minute)
 		for {
 			select {
 			case <-tkr.C:
