@@ -13,9 +13,9 @@ type Info struct {
 	tags *[]Tags
 }
 
-func (i *Info)init(){
+func (i *Info) init() {
 	newId, err := id.NewID()
-	if err!=nil{
+	if err != nil {
 		panic(err)
 	}
 	i.id = newId
@@ -86,6 +86,6 @@ func (i Info) CheckTag(o Tags) bool {
 	return false
 }
 
-func (i Info)Seen()time.Time{
+func (i Info) Seen() time.Time {
 	return i.id.Time()
 }

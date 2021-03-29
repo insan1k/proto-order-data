@@ -17,7 +17,7 @@ func TestMatches(t *testing.T) {
 	if err != nil {
 		t.Fail()
 	}
-	oo := []order.Order{}
+	var oo []order.Order
 	tkr := time.NewTicker(10 * time.Second)
 	for {
 		select {

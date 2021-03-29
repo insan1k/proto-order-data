@@ -17,4 +17,3 @@ func Signal(q func()) {
 		}
 	}
 }
-

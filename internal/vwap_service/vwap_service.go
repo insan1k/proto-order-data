@@ -58,17 +58,13 @@ func (s *Service) do() {
 			starTime := time.Now()
 			s.orders.Insert(&o)
 			vwap := s.orders.VolumeWeightedAveragePrice()
-			s.entry.Debugf("calculated vwap: %s", vwap.String())
+			doneTime := time.Now().Sub(starTime).String()
 			s.localNotify <- notifications.VWAP{
 				Asset:                s.orders.Asset(),
 				OrdersAmount:         s.orders.Count(),
-				TimeStart:            s.orders.TimeStart(),
-				TimeEnd:              s.orders.TimeEnd(),
-				TimePeriod:           s.orders.TimePeriod(),
 				TimePeriodHuman:      s.orders.TimePeriod().String(),
 				VWAP:                 vwap,
-				CalculationTime:      time.Now().Sub(starTime),
-				CalculationTimeHuman: time.Now().Sub(starTime).String(),
+				CalculationTimeHuman: doneTime,
 			}
 		case <-s.localStop:
 			s.entry.Info("quitting calculation routine")

@@ -91,11 +91,11 @@ func (v *VWAPRouter) notificationHandler() {
 	for {
 		select {
 		case notification := <-v.routes["BTC-USD"].notify:
-			fmt.Printf("got vwap %s\n", notification)
+			fmt.Printf("%s\n", notification)
 		case notification := <-v.routes["ETH-USD"].notify:
-			fmt.Printf("got vwap %s\n", notification)
+			fmt.Printf("%s\n", notification)
 		case notification := <-v.routes["ETH-BTC"].notify:
-			fmt.Printf("got vwap %s\n", notification)
+			fmt.Printf("%s\n", notification)
 		case <-v.localQuit:
 			v.entry.Info("quitting notification handler")
 			return

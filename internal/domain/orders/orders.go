@@ -24,12 +24,13 @@ type Orders struct {
 	currentSize int
 }
 
-func (o Orders)Asset()string{
+func (o Orders) Asset() string {
 	return o.asset
 }
 
 //NewOrders receives a list of orders and returns them in the Orders struct
-func NewOrders(asset string,maxSize int, orders ...*order.Order) (o Orders, err error) {
+func NewOrders(asset string, maxSize int, orders ...*order.Order) (o Orders, err error) {
+	o.asset = asset
 	if len(orders) > maxSize {
 		err = errors.New(initialOrdersTooBigErr)
 		return

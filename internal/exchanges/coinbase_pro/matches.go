@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/insan1k/proto-order-data/internal/domain/order"
 	"io"
-	"net/http"
 )
 
 //todo: separate websocket logic from exchange specific logic
@@ -35,11 +34,9 @@ type WebsocketSubscription struct {
 }
 
 func (w *WebsocketSubscription) dial() (err error) {
-	var resp *http.Response
-	w.conn, resp, err = websocket.DefaultDialer.Dial(w.exchange.WSSAddress, nil)
+	w.conn, _, err = websocket.DefaultDialer.Dial(w.exchange.WSSAddress, nil)
 	if err != nil {
 		w.entry.Errorf("error %v dialing to %v", err, w.exchange.WSSAddress)
-		w.entry.Debugf("response %v", resp)
 		return
 	}
 	return
@@ -128,7 +125,6 @@ func (w *WebsocketSubscription) treater() {
 	for {
 		select {
 		case message := <-w.localMessage:
-			w.entry.Debugf("got %v", string(message))
 			w.treatMessage(message)
 		case <-w.localQuit:
 			w.entry.Infof("exiting websocket treater")
@@ -206,13 +202,13 @@ func (w *WebsocketSubscription) treatMessage(message []byte) {
 		o := order.NewOrderString(price, quantity)
 		o.Asset = asset
 		if side == "sell" {
-			o.Inf.SetTags(order.Sell)
+			o.Inf.SetTags(order.Sell, order.Matched)
 		}
 		if side == "buy" {
-			o.Inf.SetTags(order.Buy)
+			o.Inf.SetTags(order.Buy, order.Matched)
 		}
-		o.Inf.SetTags(order.Matched)
-		o.Inf.SetMeta(message)
+		//todo: if debug is enabled save the original message
+		//o.Inf.SetMeta(message)
 		w.message <- o
 		return
 	}
@@ -222,7 +218,7 @@ func (w *WebsocketSubscription) treatMessage(message []byte) {
 		"subscriptions": subscribe,
 	}
 	if f, ok := handlers[messageType]; ok {
-		f(message)
+		go f(message)
 	} else {
 		w.entry.Errorf("unknown message type %v", messageType)
 	}

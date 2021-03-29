@@ -7,7 +7,7 @@ type ServiceLog struct {
 }
 
 func LoadServiceLog(serviceName string) (entry *apexlog.Entry) {
-	if l.Handler == nil{
+	if l.Handler == nil {
 		Load(apexlog.DebugLevel)
 	}
 	return l.WithFields(apexlog.Fields{
