@@ -8,4 +8,6 @@ const (
 	Open
 	Matched
 	Closed
+	Buy
+	Sell
 )

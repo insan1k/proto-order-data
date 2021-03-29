@@ -18,10 +18,14 @@ type Service struct {
 	entry       *apexlog.Entry
 }
 
+func (s Service) Asset() string {
+	return s.orders.Asset()
+}
+
 //Load starts the vwap goroutine
-func Load(amountOfOrders int,notifyChan chan []byte) (feed func(o order.Order), stop func(), err error) {
+func Load(assetName string, amountOfOrders int, notifyChan chan []byte) (feed func(o order.Order), stop func(), err error) {
 	var service Service
-	service.orders, err = orders.NewOrders(amountOfOrders)
+	service.orders, err = orders.NewOrders(assetName, amountOfOrders)
 	if err != nil {
 		return
 	}
@@ -32,7 +36,8 @@ func Load(amountOfOrders int,notifyChan chan []byte) (feed func(o order.Order), 
 	service.localStop = make(chan struct{})
 	service.entry = log.LoadServiceLog("vwap")
 	service.entry = service.entry.WithFields(apexlog.Fields{
-		"orders-amount":fmt.Sprintf("%v",amountOfOrders),
+		"orders-amount": fmt.Sprintf("%v", amountOfOrders),
+		"asset-name":    assetName,
 	})
 	stop = func() {
 		close(service.localStop)
@@ -45,43 +50,46 @@ func Load(amountOfOrders int,notifyChan chan []byte) (feed func(o order.Order), 
 	return
 }
 
-func (v *Service) do() {
-	v.entry.Info("started calculation routine")
+func (s *Service) do() {
+	s.entry.Info("started calculation routine")
 	for {
 		select {
-		case o := <-v.localOrders:
+		case o := <-s.localOrders:
 			starTime := time.Now()
-			v.orders.Insert(&o)
-			vwap := v.orders.VolumeWeightedAveragePrice()
-			v.entry.Debugf("calculated vwap: %v",vwap.String())
-			v.localNotify <- notifications.VWAP{
-				OrdersAmount:    v.orders.Count(),
-				TimeStart:       v.orders.TimeStart(),
-				TimeEnd:         v.orders.TimeEnd(),
-				TimePeriod:      v.orders.TimePeriod(),
-				VWAP:            vwap,
-				CalculationTime: time.Now().Sub(starTime),
+			s.orders.Insert(&o)
+			vwap := s.orders.VolumeWeightedAveragePrice()
+			s.entry.Debugf("calculated vwap: %s", vwap.String())
+			s.localNotify <- notifications.VWAP{
+				Asset:                s.orders.Asset(),
+				OrdersAmount:         s.orders.Count(),
+				TimeStart:            s.orders.TimeStart(),
+				TimeEnd:              s.orders.TimeEnd(),
+				TimePeriod:           s.orders.TimePeriod(),
+				TimePeriodHuman:      s.orders.TimePeriod().String(),
+				VWAP:                 vwap,
+				CalculationTime:      time.Now().Sub(starTime),
+				CalculationTimeHuman: time.Now().Sub(starTime).String(),
 			}
-		case <-v.localStop:
-			v.entry.Info("quitting calculation routine")
+		case <-s.localStop:
+			s.entry.Info("quitting calculation routine")
 			return
 		}
 	}
 }
 
-func (v *Service) notify(externalNotify chan []byte) {
-	v.entry.Info("started notification routine")
+func (s *Service) notify(externalNotify chan []byte) {
+	s.entry.Info("started notification routine")
 	for {
 		select {
-		case n := <-v.localNotify:
+		case n := <-s.localNotify:
 			packed, err := n.JSON()
 			if err != nil {
-				v.entry.Errorf("failed to send notification: %v", err)
+				s.entry.Errorf("failed to send notification: %s", err)
 			} else {
 				externalNotify <- packed
 			}
-		case <-v.localStop:
-			v.entry.Info("quitting notification routine")
+		case <-s.localStop:
+			s.entry.Info("quitting notification routine")
 			return
 		}
 	}

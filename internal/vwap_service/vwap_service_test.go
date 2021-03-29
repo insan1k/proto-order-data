@@ -105,7 +105,7 @@ func TestVWAP(t *testing.T) {
 	notifyChan := make(chan []byte)
 	for _, tt := range VWAPCases {
 		t.Run(tt.Name, func(t *testing.T) {
-			feed, stop, err := Load(10, notifyChan)
+			feed, stop, err := Load("dummy-asset",10, notifyChan)
 			if err != nil {
 				t.Fatalf("starting VWAP service failed: %v", err)
 			}

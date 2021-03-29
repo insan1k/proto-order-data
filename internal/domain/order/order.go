@@ -5,6 +5,7 @@ import (
 )
 
 type Order struct {
+	Asset    string
 	Price    decimal.Decimal
 	Quantity decimal.Decimal
 	Inf      Info

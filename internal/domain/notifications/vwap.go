@@ -8,12 +8,15 @@ import (
 
 // VWAP  is the structure that we have for the VWAP notification
 type VWAP struct {
-	OrdersAmount    int             `json:"orders_amount" msgpack:"a"`
-	TimeStart       time.Time       `json:"time_start" msgpack:"s"`
-	TimeEnd         time.Time       `json:"time_end" msgpack:"e"`
-	TimePeriod      time.Duration   `json:"time_period" msgpack:"p"`
-	CalculationTime time.Duration   `json:"calculation_time" msgpack:"t"`
-	VWAP            decimal.Decimal `json:"vwap" msgpack:"v"`
+	Asset                string          `json:"asset"`
+	OrdersAmount         int             `json:"orders_amount"`
+	TimeStart            time.Time       `json:"time_start"`
+	TimeEnd              time.Time       `json:"time_end"`
+	TimePeriod           time.Duration   `json:"time_period"`
+	TimePeriodHuman      string          `json:"time_period_human"`
+	CalculationTime      time.Duration   `json:"calculation_time"`
+	CalculationTimeHuman string          `json:"calculation_time_human"`
+	VWAP                 decimal.Decimal `json:"vwap"`
 }
 
 func (v *VWAP) UnJSON(in []byte) (err error) {

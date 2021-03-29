@@ -21,8 +21,8 @@ func NewID() (i ID, err error) {
 
 //Time returns the time form of the UUIDv1
 func (i ID) Time() time.Time {
-	nsec := int64(i.uuid.Time() * 100)
-	return time.Unix(0, nsec)
+	sec, nsec := i.uuid.Time().UnixTime()
+	return time.Unix(sec, nsec)
 }
 
 //String returns the string form of the UUID

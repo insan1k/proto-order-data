@@ -16,6 +16,7 @@ const (
 // Orders implements a type that holds multiple orders data... this could be the bids of an orders
 // book or the X latest orders this structure implies that orders are sorted in a useful manner
 type Orders struct {
+	asset       string
 	ring        *ring.Ring
 	first       *Element
 	last        *Element
@@ -23,8 +24,12 @@ type Orders struct {
 	currentSize int
 }
 
+func (o Orders)Asset()string{
+	return o.asset
+}
+
 //NewOrders receives a list of orders and returns them in the Orders struct
-func NewOrders(maxSize int, orders ...*order.Order) (o Orders, err error) {
+func NewOrders(asset string,maxSize int, orders ...*order.Order) (o Orders, err error) {
 	if len(orders) > maxSize {
 		err = errors.New(initialOrdersTooBigErr)
 		return
