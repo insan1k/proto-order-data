@@ -14,7 +14,7 @@ type Order struct {
 
 func (o *Order) preprocess() {
 	o.Inf.init()
-	dec := decimal.New(0, 16)
+	dec := decimal.New(0, 20)
 	o.Price, _ = decimal.RescalePair(o.Price, dec)
 	o.Quantity, _ = decimal.RescalePair(o.Quantity, dec)
 

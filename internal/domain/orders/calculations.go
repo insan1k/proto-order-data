@@ -6,8 +6,8 @@ import (
 
 //VolumeWeightedAveragePrice calculates the VWAP for a group of orders
 func (o Orders) VolumeWeightedAveragePrice() (vwap decimal.Decimal) {
-	sumQuantityMulPrice := decimal.New(0, 16)
-	sumQuantity := decimal.New(0, 16)
+	sumQuantityMulPrice := decimal.New(0, 20)
+	sumQuantity := decimal.New(0, 20)
 	calculateVWAP := func(i interface{}) {
 		// I don't care much about the unsafe casting here because this is the Orders structure
 		// we already initialize each element with it's index, and if the order is nil we don't
