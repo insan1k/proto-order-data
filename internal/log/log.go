@@ -15,6 +15,7 @@ func Load(level apexlog.Level) {
 	l.Handler = logfmt.New(os.Stderr)
 }
 
+// Get returns global logger
 func Get() *apexlog.Logger {
 	return &l
 }

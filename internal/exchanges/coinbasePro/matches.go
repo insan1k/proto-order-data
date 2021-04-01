@@ -1,4 +1,4 @@
-package coinbase_pro
+package coinbasePro
 
 import (
 	"encoding/json"
@@ -11,17 +11,20 @@ import (
 
 //todo: separate websocket logic from exchange specific logic
 
+// Message
 type Message struct {
 	Type       string    `json:"type"`
 	ProductIDs []string  `json:"product_ids,omitempty"`
 	Channels   []Channel `json:"channels,omitempty"`
 }
 
+// Channel
 type Channel struct {
 	Name       string   `json:"name"`
 	ProductIDs []string `json:"product_ids,omitempty"`
 }
 
+// WebsocketSubscription
 type WebsocketSubscription struct {
 	exchange           *CoinbasePro
 	conn               *websocket.Conn
@@ -75,6 +78,7 @@ func (w *WebsocketSubscription) receive() (received []byte, err error) {
 	return
 }
 
+// SubscribeMatches subscribes to the matches and sends the results as orders
 func (w *WebsocketSubscription) SubscribeMatches(exchange *CoinbasePro, products []string, message chan order.Order) (quit func(), err error) {
 	w.message = message
 	w.exchange = exchange

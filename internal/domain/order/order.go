@@ -4,25 +4,24 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// Order
 type Order struct {
 	Asset            string
 	Price            decimal.Decimal
 	Quantity         decimal.Decimal
-	priceMulQuantity decimal.Decimal
 	Inf              Info
 }
 
 func (o *Order) preprocess() {
+	// initialize stuff
 	o.Inf.init()
+	// make sure these prices and quantities are initialized with 32 precision decimal
 	dec := decimal.New(0, 32)
 	o.Price, _ = decimal.RescalePair(o.Price, dec)
 	o.Quantity, _ = decimal.RescalePair(o.Quantity, dec)
 
 }
 
-func (o *Order) GetPriceMulQuantity() decimal.Decimal {
-	return o.priceMulQuantity
-}
 
 func NewOrderFloat64(price, quantity float64) (o Order) {
 	o.Price = decimal.NewFromFloat(price)
@@ -38,6 +37,7 @@ func NewOrderFloat32(price, quantity float32) (o Order) {
 	return
 }
 
+//NewOrderString creates from string
 func NewOrderString(price, quantity string) (o Order) {
 	o.Price = decimal.RequireFromString(price)
 	o.Quantity = decimal.RequireFromString(quantity)

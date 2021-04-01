@@ -21,15 +21,18 @@ func (i *Info) init() {
 	i.id = newId
 }
 
+//SetMeta stores metadata i.e: the raw data we got from the exchange
 func (i *Info) SetMeta(b []byte) {
 	i.meta = &b
 }
 
+//GetMeta retrieves a copy of the metadata
 func (i Info) GetMeta() (b []byte) {
 	return *i.meta
 }
 
 // todo: transfer this logic into convenience functions
+// SetTags
 func (i *Info) SetTags(o ...Tags) {
 	if i.tags == nil {
 		var tags []Tags
@@ -40,6 +43,7 @@ func (i *Info) SetTags(o ...Tags) {
 	}
 }
 
+// CheckTags
 func (i Info) CheckTags(o ...Tags) bool {
 	if len(o) == 0 {
 		if i.tags == nil {
@@ -57,6 +61,7 @@ func (i Info) CheckTags(o ...Tags) bool {
 	return true
 }
 
+// RemoveTag
 func (i *Info) RemoveTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -74,6 +79,7 @@ func (i *Info) RemoveTag(o Tags) bool {
 	return found
 }
 
+// CheckTag
 func (i Info) CheckTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -86,6 +92,7 @@ func (i Info) CheckTag(o Tags) bool {
 	return false
 }
 
+// SeenReturns the creation time of this Order Info
 func (i Info) Seen() time.Time {
 	return i.id.Time()
 }
