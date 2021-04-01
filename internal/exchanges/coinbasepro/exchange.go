@@ -1,8 +1,5 @@
-<<<<<<< HEAD:internal/exchanges/coinbasepro/exchange.go
 package coinbasepro
-=======
-package coinbasePro
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857:internal/exchanges/coinbasePro/exchange.go
+
 
 import (
 	apexlog "github.com/apex/log"

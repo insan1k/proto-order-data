@@ -3,15 +3,10 @@ package router
 import (
 	apexlog "github.com/apex/log"
 	"github.com/insan1k/proto-order-data/internal/domain/order"
-<<<<<<< HEAD
 	"github.com/insan1k/proto-order-data/internal/exchanges/coinbasepro"
 	"github.com/insan1k/proto-order-data/internal/log"
 	"github.com/insan1k/proto-order-data/internal/service"
-=======
-	"github.com/insan1k/proto-order-data/internal/exchanges/coinbasePro"
-	"github.com/insan1k/proto-order-data/internal/log"
-	"github.com/insan1k/proto-order-data/internal/vwapService"
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
+
 )
 
 type vwapDownstreamRoute struct {
@@ -24,29 +19,17 @@ type vwapDownstreamRoute struct {
 func newVWAPRoute(pair string) (r vwapDownstreamRoute, err error) {
 	r.asset = pair
 	r.notify = make(chan []byte)
-<<<<<<< HEAD
 	r.downstream, r.quit, err = service.Load(pair, 200, r.notify)
-=======
-	r.downstream, r.quit, err = vwapService.Load(pair, 200, r.notify)
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 	return
 }
 
 // VWAPRouter holds routes and other relevant router things
 type VWAPRouter struct {
-<<<<<<< HEAD
 	exchange         coinbasepro.CoinbasePro
 	pairs            []string
 	upstreamChan     chan order.Order
 	upstreamQuit     func()
 	upstreamService  coinbasepro.WebsocketSubscription
-=======
-	exchange         coinbasePro.CoinbasePro
-	pairs            []string
-	upstreamChan     chan order.Order
-	upstreamQuit     func()
-	upstreamService  coinbasePro.WebsocketSubscription
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 	downstreamRoutes map[string]vwapDownstreamRoute
 	notificationChan chan []byte
 	entry            *apexlog.Entry
@@ -57,15 +40,9 @@ type VWAPRouter struct {
 // Start runs this router
 func (v *VWAPRouter) Start(notificationChan chan []byte) {
 	v.notificationChan = notificationChan
-<<<<<<< HEAD
 	v.exchange = coinbasepro.CoinbasePro{}
 	v.exchange.Defaults()
 	v.upstreamService = coinbasepro.WebsocketSubscription{}
-=======
-	v.exchange = coinbasePro.CoinbasePro{}
-	v.exchange.Defaults()
-	v.upstreamService = coinbasePro.WebsocketSubscription{}
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 	v.pairs = []string{"BTC-USD", "ETH-USD", "ETH-BTC"}
 	v.upstreamChan = make(chan order.Order)
 	v.entry = log.LoadServiceLog("router")
