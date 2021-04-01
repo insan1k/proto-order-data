@@ -12,6 +12,9 @@ func main() {
 	l := log.Get()
 	l.Infof("starting vwap feed")
 	v := router.VWAPRouter{}
+	notificationChan:=make(chan []byte)
+	q:=util.Printer(notificationChan)
+	go util.Signal(q)
 	go util.Signal(v.Stop)
-	v.Start()
+	v.Start(notificationChan)
 }

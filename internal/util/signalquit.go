@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -16,4 +17,22 @@ func Signal(q func()) {
 			q()
 		}
 	}
+}
+
+func Printer(in chan []byte)(q func()){
+	quit:=make(chan struct{})
+	q = func(){
+		close(quit)
+	}
+	go func(){
+		for {
+			select {
+			case p:=<-in:
+				fmt.Printf("%s",p)
+			case <-quit:
+				return
+			}
+		}
+	}()
+	return
 }

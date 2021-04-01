@@ -1,7 +1,6 @@
 package router
 
 import (
-	"fmt"
 	apexlog "github.com/apex/log"
 	"github.com/insan1k/proto-order-data/internal/domain/order"
 	"github.com/insan1k/proto-order-data/internal/exchanges/coinbase_pro"
@@ -9,33 +8,35 @@ import (
 	"github.com/insan1k/proto-order-data/internal/vwap_service"
 )
 
-type vwapRoute struct {
-	asset  string
-	route  func(o order.Order)
-	notify chan []byte
-	quit   func()
+type vwapDownstreamRoute struct {
+	asset      string
+	downstream func(o order.Order)
+	notify     chan []byte
+	quit       func()
 }
 
-func newVWAPRoute(pair string) (r vwapRoute, err error) {
+func newVWAPRoute(pair string) (r vwapDownstreamRoute, err error) {
 	r.asset = pair
 	r.notify = make(chan []byte)
-	r.route, r.quit, err = vwap_service.Load(pair, 200, r.notify)
+	r.downstream, r.quit, err = vwap_service.Load(pair, 200, r.notify)
 	return
 }
 
 type VWAPRouter struct {
-	exchange        coinbase_pro.CoinbasePro
-	pairs           []string
-	upstreamChan    chan order.Order
-	upstreamQuit    func()
-	upstreamService coinbase_pro.WebsocketSubscription
-	routes          map[string]vwapRoute
-	entry           *apexlog.Entry
-	localQuit       chan struct{}
-	quit            func()
+	exchange         coinbase_pro.CoinbasePro
+	pairs            []string
+	upstreamChan     chan order.Order
+	upstreamQuit     func()
+	upstreamService  coinbase_pro.WebsocketSubscription
+	downstreamRoutes map[string]vwapDownstreamRoute
+	notificationChan chan []byte
+	entry            *apexlog.Entry
+	localQuit        chan struct{}
+	quit             func()
 }
 
-func (v *VWAPRouter) Start() {
+func (v *VWAPRouter) Start(notificationChan chan []byte) {
+	v.notificationChan = notificationChan
 	v.exchange = coinbase_pro.CoinbasePro{}
 	v.exchange.Defaults()
 	v.upstreamService = coinbase_pro.WebsocketSubscription{}
@@ -44,14 +45,14 @@ func (v *VWAPRouter) Start() {
 	v.entry = log.LoadServiceLog("router")
 	v.localQuit = make(chan struct{})
 	var err error
-	v.routes = make(map[string]vwapRoute)
+	v.downstreamRoutes = make(map[string]vwapDownstreamRoute)
 	for _, pair := range v.pairs {
 		route, err := newVWAPRoute(pair)
 		if err != nil {
-			v.entry.Errorf("creating route for %v failed %v", pair, err)
+			v.entry.Errorf("creating downstream for %v failed %v", pair, err)
 			return
 		}
-		v.routes[pair] = route
+		v.downstreamRoutes[pair] = route
 	}
 	go v.notificationHandler()
 	v.upstreamQuit, err = v.upstreamService.SubscribeMatches(&v.exchange, v.pairs, v.upstreamChan)
@@ -73,13 +74,13 @@ func (v *VWAPRouter) route() {
 	for {
 		select {
 		case o := <-v.upstreamChan:
-			if r, ok := v.routes[o.Asset]; ok {
-				r.route(o)
+			if r, ok := v.downstreamRoutes[o.Asset]; ok {
+				r.downstream(o)
 			}
 		case <-v.localQuit:
 			v.entry.Info("quitting router")
 			v.upstreamQuit()
-			for _, route := range v.routes {
+			for _, route := range v.downstreamRoutes {
 				route.quit()
 			}
 			return
@@ -90,12 +91,12 @@ func (v *VWAPRouter) route() {
 func (v *VWAPRouter) notificationHandler() {
 	for {
 		select {
-		case notification := <-v.routes["BTC-USD"].notify:
-			fmt.Printf("%s\n", notification)
-		case notification := <-v.routes["ETH-USD"].notify:
-			fmt.Printf("%s\n", notification)
-		case notification := <-v.routes["ETH-BTC"].notify:
-			fmt.Printf("%s\n", notification)
+		case notification := <-v.downstreamRoutes["BTC-USD"].notify:
+			v.notificationChan <- notification
+		case notification := <-v.downstreamRoutes["ETH-USD"].notify:
+			v.notificationChan <- notification
+		case notification := <-v.downstreamRoutes["ETH-BTC"].notify:
+			v.notificationChan <- notification
 		case <-v.localQuit:
 			v.entry.Info("quitting notification handler")
 			return
