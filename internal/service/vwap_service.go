@@ -1,8 +1,5 @@
-<<<<<<< HEAD:internal/service/vwap_service.go
 package service
-=======
-package vwapService
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857:internal/vwapService/vwap_service.go
+
 
 import (
 	"fmt"

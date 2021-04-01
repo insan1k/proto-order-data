@@ -32,11 +32,8 @@ func (i Info) GetMeta() (b []byte) {
 }
 
 // todo: transfer this logic into convenience functions
-<<<<<<< HEAD
+
 //SetTags
-=======
-// SetTags
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 func (i *Info) SetTags(o ...Tags) {
 	if i.tags == nil {
 		var tags []Tags
@@ -47,11 +44,7 @@ func (i *Info) SetTags(o ...Tags) {
 	}
 }
 
-<<<<<<< HEAD
 //CheckTags
-=======
-// CheckTags
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 func (i Info) CheckTags(o ...Tags) bool {
 	if len(o) == 0 {
 		if i.tags == nil {
@@ -69,11 +62,7 @@ func (i Info) CheckTags(o ...Tags) bool {
 	return true
 }
 
-<<<<<<< HEAD
 //RemoveTag
-=======
-// RemoveTag
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 func (i *Info) RemoveTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -91,11 +80,8 @@ func (i *Info) RemoveTag(o Tags) bool {
 	return found
 }
 
-<<<<<<< HEAD
+
 //CheckTag
-=======
-// CheckTag
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 func (i Info) CheckTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -108,11 +94,7 @@ func (i Info) CheckTag(o Tags) bool {
 	return false
 }
 
-<<<<<<< HEAD
 //Seen the creation time of this Order Info
-=======
-// SeenReturns the creation time of this Order Info
->>>>>>> 27d5f2ff5f8f7d768344c848b2ce50316e28c857
 func (i Info) Seen() time.Time {
 	return i.id.Time()
 }
