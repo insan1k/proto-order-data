@@ -1,4 +1,4 @@
-package coinbasePro
+package coinbasepro
 
 import (
 	apexlog "github.com/apex/log"

@@ -1,4 +1,4 @@
-package coinbasePro
+package coinbasepro
 
 import (
 	"github.com/insan1k/proto-order-data/internal/domain/order"

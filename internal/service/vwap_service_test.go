@@ -1,4 +1,4 @@
-package vwapService
+package service
 
 import (
 	"github.com/insan1k/proto-order-data/internal/domain/notifications"
@@ -102,7 +102,7 @@ func TestVWAP(t *testing.T) {
 			for _, o := range tt.Orders {
 				feed(o)
 				resp := <-notifyChan
-				err:=Notification.UnJSON(resp)
+				err := Notification.UnJSON(resp)
 				if err != nil {
 					t.Fatalf("could not read notification from vwap: %v", err)
 				}

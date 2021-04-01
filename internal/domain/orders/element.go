@@ -20,7 +20,7 @@ const (
 	Last
 )
 
-//this is the element as it will be used by the ring it wraps the OrderType with an index
+//Element this is the element as it will be used by the ring it wraps the OrderType with an index
 type Element struct {
 	Index int
 	Order *order.Order
@@ -33,7 +33,7 @@ type Element struct {
 //  useful in implementing logic that relates to orders, as you can
 //  have the orders hold information about itself that is relevant
 //  for a group of orders, i.e: is this the newest order?
-
+//SetTags
 func (i *Element) SetTags(o ...Tag) {
 	if i.tags == nil {
 		var tags []Tag
@@ -44,6 +44,7 @@ func (i *Element) SetTags(o ...Tag) {
 	}
 }
 
+//CheckTags
 func (i Element) CheckTags(o ...Tag) bool {
 	if len(o) == 0 {
 		if i.tags == nil {
@@ -61,6 +62,7 @@ func (i Element) CheckTags(o ...Tag) bool {
 	return true
 }
 
+//RemoveTag
 func (i *Element) RemoveTag(t Tag) bool {
 	if i.tags == nil {
 		return false
@@ -78,6 +80,7 @@ func (i *Element) RemoveTag(t Tag) bool {
 	return found
 }
 
+//CheckTag
 func (i Element) CheckTag(o Tag) bool {
 	if i.tags == nil {
 		return false

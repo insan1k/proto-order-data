@@ -19,16 +19,16 @@ func Signal(q func()) {
 	}
 }
 
-func Printer(in chan []byte)(q func()){
-	quit:=make(chan struct{})
-	q = func(){
+func Printer(in chan []byte) (q func()) {
+	quit := make(chan struct{})
+	q = func() {
 		close(quit)
 	}
-	go func(){
+	go func() {
 		for {
 			select {
-			case p:=<-in:
-				fmt.Printf("%s\n",p)
+			case p := <-in:
+				fmt.Printf("%s\n", p)
 			case <-quit:
 				return
 			}

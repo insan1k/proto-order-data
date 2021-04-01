@@ -1,4 +1,4 @@
-package vwapService
+package service
 
 import (
 	"fmt"
@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+//Service holds service information
 type Service struct {
 	orders      orders.Orders
 	localOrders chan order.Order
@@ -18,6 +19,7 @@ type Service struct {
 	entry       *apexlog.Entry
 }
 
+//Asset returns the asset this service is responsible for
 func (s Service) Asset() string {
 	return s.orders.Asset()
 }

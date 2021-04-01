@@ -57,7 +57,7 @@ jobs:
         uses: actions/checkout@v1
       - name: build
         run: |
-          cd ./cmd/vwapFeed
+          cd ./cmd/feed
           export GO111MODULE=on
           GOOS=windows GOARCH=amd64 go build -o ../bin/ci-test-windows-amd64.exe
           GOOS=linux   GOARCH=amd64 go build -o ../bin/ci-test-linux-amd64
