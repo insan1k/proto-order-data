@@ -28,7 +28,7 @@ func Printer(in chan []byte)(q func()){
 		for {
 			select {
 			case p:=<-in:
-				fmt.Printf("%s",p)
+				fmt.Printf("%s\n",p)
 			case <-quit:
 				return
 			}
