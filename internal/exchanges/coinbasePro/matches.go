@@ -78,6 +78,7 @@ func (w *WebsocketSubscription) receive() (received []byte, err error) {
 	return
 }
 
+// SubscribeMatches subscribes to the matches and sends the results as orders
 func (w *WebsocketSubscription) SubscribeMatches(exchange *CoinbasePro, products []string, message chan order.Order) (quit func(), err error) {
 	w.message = message
 	w.exchange = exchange
