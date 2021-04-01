@@ -1,4 +1,5 @@
-package coinbasePro
+package coinbasepro
+
 
 import (
 	"encoding/json"

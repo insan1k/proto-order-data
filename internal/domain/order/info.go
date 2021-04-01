@@ -32,7 +32,8 @@ func (i Info) GetMeta() (b []byte) {
 }
 
 // todo: transfer this logic into convenience functions
-// SetTags
+
+//SetTags
 func (i *Info) SetTags(o ...Tags) {
 	if i.tags == nil {
 		var tags []Tags
@@ -43,7 +44,7 @@ func (i *Info) SetTags(o ...Tags) {
 	}
 }
 
-// CheckTags
+//CheckTags
 func (i Info) CheckTags(o ...Tags) bool {
 	if len(o) == 0 {
 		if i.tags == nil {
@@ -61,7 +62,7 @@ func (i Info) CheckTags(o ...Tags) bool {
 	return true
 }
 
-// RemoveTag
+//RemoveTag
 func (i *Info) RemoveTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -79,7 +80,8 @@ func (i *Info) RemoveTag(o Tags) bool {
 	return found
 }
 
-// CheckTag
+
+//CheckTag
 func (i Info) CheckTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -92,7 +94,7 @@ func (i Info) CheckTag(o Tags) bool {
 	return false
 }
 
-// SeenReturns the creation time of this Order Info
+//Seen the creation time of this Order Info
 func (i Info) Seen() time.Time {
 	return i.id.Time()
 }

@@ -102,7 +102,7 @@ func (o Orders) TimePeriod() time.Duration {
 }
 
 // Cap returns the maximum capacity of this Orders struct
-func (o Orders) Cap()(i int){
+func (o Orders) Cap() (i int) {
 	return o.maxSize
 }
 

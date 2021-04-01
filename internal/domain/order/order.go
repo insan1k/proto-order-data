@@ -6,10 +6,10 @@ import (
 
 // Order
 type Order struct {
-	Asset            string
-	Price            decimal.Decimal
-	Quantity         decimal.Decimal
-	Inf              Info
+	Asset    string
+	Price    decimal.Decimal
+	Quantity decimal.Decimal
+	Inf      Info
 }
 
 func (o *Order) preprocess() {
@@ -22,7 +22,7 @@ func (o *Order) preprocess() {
 
 }
 
-
+//NewOrderFloat64 based on float64
 func NewOrderFloat64(price, quantity float64) (o Order) {
 	o.Price = decimal.NewFromFloat(price)
 	o.Quantity = decimal.NewFromFloat(quantity)
@@ -30,6 +30,7 @@ func NewOrderFloat64(price, quantity float64) (o Order) {
 	return
 }
 
+//NewOrderFloat32 based on float32
 func NewOrderFloat32(price, quantity float32) (o Order) {
 	o.Price = decimal.NewFromFloat32(price)
 	o.Quantity = decimal.NewFromFloat32(quantity)
@@ -45,7 +46,7 @@ func NewOrderString(price, quantity string) (o Order) {
 	return
 }
 
-// EmptyOrder convenience function to return a dummy/empty orders
+//EmptyOrder convenience function to return a dummy/empty orders
 func EmptyOrder() (o Order) {
 	o.Inf.init()
 	o.Inf.SetTags(Empty)

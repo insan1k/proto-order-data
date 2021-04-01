@@ -7,6 +7,7 @@ import (
 	"syscall"
 )
 
+//Signal watches for os signal and calls function, preferably quit function
 func Signal(q func()) {
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGTERM, syscall.SIGINT)
@@ -19,16 +20,17 @@ func Signal(q func()) {
 	}
 }
 
-func Printer(in chan []byte)(q func()){
-	quit:=make(chan struct{})
-	q = func(){
+//Printer things that come in []byte
+func Printer(in chan []byte) (q func()) {
+	quit := make(chan struct{})
+	q = func() {
 		close(quit)
 	}
-	go func(){
+	go func() {
 		for {
 			select {
-			case p:=<-in:
-				fmt.Printf("%s\n",p)
+			case p := <-in:
+				fmt.Printf("%s\n", p)
 			case <-quit:
 				return
 			}
