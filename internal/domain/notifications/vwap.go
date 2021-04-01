@@ -5,7 +5,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// VWAP  is the structure that we have for the VWAP notification
+//VWAP is the structure that we have for the VWAP notification
 type VWAP struct {
 	Asset                string          `json:"asset"`
 	OrdersAmount         int             `json:"orders_amount"`
@@ -14,13 +14,13 @@ type VWAP struct {
 	VWAP                 decimal.Decimal `json:"vwap"`
 }
 
-//UnJSON
+//UnJSON Unmarshal json into itself
 func (v *VWAP) UnJSON(in []byte) (err error) {
 	err = json.Unmarshal(in, &v)
 	return
 }
 
-//JSON
+//JSON returns itself as json
 func (v VWAP) JSON() (out []byte, err error) {
 	out, err = json.Marshal(&v)
 	return

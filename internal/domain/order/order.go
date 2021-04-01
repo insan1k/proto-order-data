@@ -4,7 +4,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-// Order
+// Order holds order information
 type Order struct {
 	Asset    string
 	Price    decimal.Decimal

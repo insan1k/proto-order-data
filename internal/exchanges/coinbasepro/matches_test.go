@@ -1,6 +1,5 @@
 package coinbasepro
 
-
 import (
 	"github.com/insan1k/proto-order-data/internal/domain/order"
 	"github.com/stretchr/testify/assert"

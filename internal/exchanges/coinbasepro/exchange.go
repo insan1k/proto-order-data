@@ -1,6 +1,5 @@
 package coinbasepro
 
-
 import (
 	apexlog "github.com/apex/log"
 	"github.com/insan1k/proto-order-data/internal/log"

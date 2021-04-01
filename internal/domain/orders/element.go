@@ -33,7 +33,7 @@ type Element struct {
 //  useful in implementing logic that relates to orders, as you can
 //  have the orders hold information about itself that is relevant
 //  for a group of orders, i.e: is this the newest order?
-//SetTags
+//SetTags set one or more tags
 func (i *Element) SetTags(o ...Tag) {
 	if i.tags == nil {
 		var tags []Tag
@@ -44,7 +44,7 @@ func (i *Element) SetTags(o ...Tag) {
 	}
 }
 
-//CheckTags
+//CheckTags check one or more tags exists
 func (i Element) CheckTags(o ...Tag) bool {
 	if len(o) == 0 {
 		if i.tags == nil {
@@ -62,7 +62,7 @@ func (i Element) CheckTags(o ...Tag) bool {
 	return true
 }
 
-//RemoveTag
+//RemoveTag remove a particular tag
 func (i *Element) RemoveTag(t Tag) bool {
 	if i.tags == nil {
 		return false
@@ -80,7 +80,7 @@ func (i *Element) RemoveTag(t Tag) bool {
 	return found
 }
 
-//CheckTag
+//CheckTag check if a particular tag exists
 func (i Element) CheckTag(o Tag) bool {
 	if i.tags == nil {
 		return false
