@@ -3,9 +3,9 @@ package router
 import (
 	apexlog "github.com/apex/log"
 	"github.com/insan1k/proto-order-data/internal/domain/order"
-	"github.com/insan1k/proto-order-data/internal/exchanges/coinbase_pro"
+	"github.com/insan1k/proto-order-data/internal/exchanges/coinbasePro"
 	"github.com/insan1k/proto-order-data/internal/log"
-	"github.com/insan1k/proto-order-data/internal/vwap_service"
+	"github.com/insan1k/proto-order-data/internal/vwapService"
 )
 
 type vwapDownstreamRoute struct {
@@ -18,16 +18,16 @@ type vwapDownstreamRoute struct {
 func newVWAPRoute(pair string) (r vwapDownstreamRoute, err error) {
 	r.asset = pair
 	r.notify = make(chan []byte)
-	r.downstream, r.quit, err = vwap_service.Load(pair, 200, r.notify)
+	r.downstream, r.quit, err = vwapService.Load(pair, 200, r.notify)
 	return
 }
 
 type VWAPRouter struct {
-	exchange         coinbase_pro.CoinbasePro
+	exchange         coinbasePro.CoinbasePro
 	pairs            []string
 	upstreamChan     chan order.Order
 	upstreamQuit     func()
-	upstreamService  coinbase_pro.WebsocketSubscription
+	upstreamService  coinbasePro.WebsocketSubscription
 	downstreamRoutes map[string]vwapDownstreamRoute
 	notificationChan chan []byte
 	entry            *apexlog.Entry
@@ -37,9 +37,9 @@ type VWAPRouter struct {
 
 func (v *VWAPRouter) Start(notificationChan chan []byte) {
 	v.notificationChan = notificationChan
-	v.exchange = coinbase_pro.CoinbasePro{}
+	v.exchange = coinbasePro.CoinbasePro{}
 	v.exchange.Defaults()
-	v.upstreamService = coinbase_pro.WebsocketSubscription{}
+	v.upstreamService = coinbasePro.WebsocketSubscription{}
 	v.pairs = []string{"BTC-USD", "ETH-USD", "ETH-BTC"}
 	v.upstreamChan = make(chan order.Order)
 	v.entry = log.LoadServiceLog("router")

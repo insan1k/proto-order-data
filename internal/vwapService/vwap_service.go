@@ -1,4 +1,4 @@
-package vwap_service
+package vwapService
 
 import (
 	"fmt"
@@ -61,7 +61,7 @@ func (s *Service) do() {
 			doneTime := time.Now().Sub(starTime).String()
 			s.localNotify <- notifications.VWAP{
 				Asset:                s.orders.Asset(),
-				OrdersAmount:         s.orders.Count(),
+				OrdersAmount:         s.orders.Len(),
 				TimePeriodHuman:      s.orders.TimePeriod().String(),
 				VWAP:                 vwap,
 				CalculationTimeHuman: doneTime,

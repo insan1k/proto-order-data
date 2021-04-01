@@ -1,4 +1,4 @@
-package coinbase_pro
+package coinbasePro
 
 import (
 	"encoding/json"
@@ -11,17 +11,20 @@ import (
 
 //todo: separate websocket logic from exchange specific logic
 
+// Message
 type Message struct {
 	Type       string    `json:"type"`
 	ProductIDs []string  `json:"product_ids,omitempty"`
 	Channels   []Channel `json:"channels,omitempty"`
 }
 
+// Channel
 type Channel struct {
 	Name       string   `json:"name"`
 	ProductIDs []string `json:"product_ids,omitempty"`
 }
 
+// WebsocketSubscription
 type WebsocketSubscription struct {
 	exchange           *CoinbasePro
 	conn               *websocket.Conn

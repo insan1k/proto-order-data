@@ -24,6 +24,7 @@ type Orders struct {
 	currentSize int
 }
 
+// Asset returns the asset of these current orders
 func (o Orders) Asset() string {
 	return o.asset
 }
@@ -69,6 +70,7 @@ func NewOrders(asset string, maxSize int, orders ...*order.Order) (o Orders, err
 	return
 }
 
+// First returns a copy of the first order
 func (o Orders) First() (order.Order, error) {
 	if o.currentSize == 0 {
 		return order.EmptyOrder(), errors.New(emptyOrders)
@@ -76,6 +78,7 @@ func (o Orders) First() (order.Order, error) {
 	return *o.first.Order, nil
 }
 
+// Last returns a copy of the last order
 func (o Orders) Last() (order.Order, error) {
 	if o.currentSize == 0 {
 		return order.EmptyOrder(), errors.New(emptyOrders)
@@ -83,19 +86,28 @@ func (o Orders) Last() (order.Order, error) {
 	return *o.last.Order, nil
 }
 
+// TimeStart returns the time we received the first order
 func (o Orders) TimeStart() time.Time {
 	return o.first.Order.Inf.Seen()
 }
 
+// TimeEnd returns the time we received the last order
 func (o Orders) TimeEnd() time.Time {
 	return o.last.Order.Inf.Seen()
 }
 
+// TimePeriod returns the time period of orders inside
 func (o Orders) TimePeriod() time.Duration {
 	return o.TimeEnd().Sub(o.TimeStart())
 }
 
-func (o Orders) Count() (i int) {
+// Cap returns the maximum capacity of this Orders struct
+func (o Orders) Cap()(i int){
+	return o.maxSize
+}
+
+// Len returns the utilized capacity of this Orders struct
+func (o Orders) Len() (i int) {
 	return o.currentSize
 }
 
@@ -115,6 +127,7 @@ func (o *Orders) set(order *order.Order) {
 	this.tags = nil
 }
 
+//Insert adds order.Order into ring
 func (o *Orders) Insert(order *order.Order) {
 	//check if we're operating under an empty Orders ring
 	if o.currentSize == 0 {
@@ -134,7 +147,7 @@ func (o *Orders) Insert(order *order.Order) {
 	o.next()
 	// we set it's order reference
 	o.set(order)
-	//it will also be the new last, so we get it's reference
+	//it will also be the new last, so we update it's reference
 	o.last = o.get()
 	//and we set it's tag
 	o.last.SetTags(Last)
@@ -168,18 +181,8 @@ func (o *Orders) moveToLast() {
 }
 
 func (o *Orders) moveToFirst() {
-	var firstIndex int
-	if o.currentSize == 0 {
-		firstIndex = 0
-	} else {
-		firstIndex = o.last.Index
-	}
-	// figure out where we are in the ring
-	e := o.get()
-	if e.Index-firstIndex != 0 {
-		//go to the last element
-		o.ring = o.ring.Move(firstIndex - e.Index)
-	}
+	o.moveToLast()
+	o.next()
 }
 
 //todo: sorting functions

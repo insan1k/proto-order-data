@@ -1,4 +1,4 @@
-package vwap_service
+package vwapService
 
 import (
 	"github.com/insan1k/proto-order-data/internal/domain/notifications"

@@ -1,16 +1,18 @@
-package coinbase_pro
+package coinbasePro
 
 import (
 	apexlog "github.com/apex/log"
 	"github.com/insan1k/proto-order-data/internal/log"
 )
 
+// CoinbasePro exchange struct
 type CoinbasePro struct {
 	ExchangeName string
 	WSSAddress   string
 	entry        *apexlog.Entry
 }
 
+// Defaults sets default values for exchange struct
 func (c *CoinbasePro) Defaults() {
 	c.ExchangeName = "CoinbasePro"
 	c.WSSAddress = "wss://ws-feed.pro.coinbase.com"

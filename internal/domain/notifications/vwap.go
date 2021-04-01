@@ -14,11 +14,13 @@ type VWAP struct {
 	VWAP                 decimal.Decimal `json:"vwap"`
 }
 
+// UnJSON
 func (v *VWAP) UnJSON(in []byte) (err error) {
 	err = json.Unmarshal(in, &v)
 	return
 }
 
+// JSON
 func (v VWAP) JSON() (out []byte, err error) {
 	out, err = json.Marshal(&v)
 	return

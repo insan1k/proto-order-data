@@ -33,6 +33,7 @@ type Element struct {
 //  useful in implementing logic that relates to orders, as you can
 //  have the orders hold information about itself that is relevant
 //  for a group of orders, i.e: is this the newest order?
+
 func (i *Element) SetTags(o ...Tag) {
 	if i.tags == nil {
 		var tags []Tag
