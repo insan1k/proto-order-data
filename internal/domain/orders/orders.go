@@ -13,7 +13,7 @@ const (
 	emptyOrders = "orders struct is currently empty"
 )
 
-// Orders implements a type that holds multiple orders data... this could be the bids of an orders
+//Orders implements a type that holds multiple orders data... this could be the bids of an orders
 // book or the X latest orders this structure implies that orders are sorted in a useful manner
 type Orders struct {
 	asset       string
@@ -24,7 +24,7 @@ type Orders struct {
 	currentSize int
 }
 
-// Asset returns the asset of these current orders
+//Asset returns the asset of these current orders
 func (o Orders) Asset() string {
 	return o.asset
 }
@@ -70,7 +70,7 @@ func NewOrders(asset string, maxSize int, orders ...*order.Order) (o Orders, err
 	return
 }
 
-// First returns a copy of the first order
+//First returns a copy of the first order
 func (o Orders) First() (order.Order, error) {
 	if o.currentSize == 0 {
 		return order.EmptyOrder(), errors.New(emptyOrders)
@@ -78,7 +78,7 @@ func (o Orders) First() (order.Order, error) {
 	return *o.first.Order, nil
 }
 
-// Last returns a copy of the last order
+//Last returns a copy of the last order
 func (o Orders) Last() (order.Order, error) {
 	if o.currentSize == 0 {
 		return order.EmptyOrder(), errors.New(emptyOrders)
@@ -86,27 +86,27 @@ func (o Orders) Last() (order.Order, error) {
 	return *o.last.Order, nil
 }
 
-// TimeStart returns the time we received the first order
+//TimeStart returns the time we received the first order
 func (o Orders) TimeStart() time.Time {
 	return o.first.Order.Inf.Seen()
 }
 
-// TimeEnd returns the time we received the last order
+//TimeEnd returns the time we received the last order
 func (o Orders) TimeEnd() time.Time {
 	return o.last.Order.Inf.Seen()
 }
 
-// TimePeriod returns the time period of orders inside
+//TimePeriod returns the time period of orders inside
 func (o Orders) TimePeriod() time.Duration {
 	return o.TimeEnd().Sub(o.TimeStart())
 }
 
-// Cap returns the maximum capacity of this Orders struct
+//Cap returns the maximum capacity of this Orders struct
 func (o Orders) Cap() (i int) {
 	return o.maxSize
 }
 
-// Len returns the utilized capacity of this Orders struct
+//Len returns the utilized capacity of this Orders struct
 func (o Orders) Len() (i int) {
 	return o.currentSize
 }

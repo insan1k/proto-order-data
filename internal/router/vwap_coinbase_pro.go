@@ -6,7 +6,6 @@ import (
 	"github.com/insan1k/proto-order-data/internal/exchanges/coinbasepro"
 	"github.com/insan1k/proto-order-data/internal/log"
 	"github.com/insan1k/proto-order-data/internal/service"
-
 )
 
 type vwapDownstreamRoute struct {

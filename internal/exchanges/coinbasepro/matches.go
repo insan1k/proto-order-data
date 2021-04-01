@@ -1,6 +1,5 @@
 package coinbasepro
 
-
 import (
 	"encoding/json"
 	apexlog "github.com/apex/log"
@@ -12,20 +11,20 @@ import (
 
 //todo: separate websocket logic from exchange specific logic
 
-// Message
+// Message holds base message information
 type Message struct {
 	Type       string    `json:"type"`
 	ProductIDs []string  `json:"product_ids,omitempty"`
 	Channels   []Channel `json:"channels,omitempty"`
 }
 
-// Channel
+// Channel holds subscription channel information
 type Channel struct {
 	Name       string   `json:"name"`
 	ProductIDs []string `json:"product_ids,omitempty"`
 }
 
-// WebsocketSubscription
+// WebsocketSubscription holds information related to the subscription service
 type WebsocketSubscription struct {
 	exchange           *CoinbasePro
 	conn               *websocket.Conn

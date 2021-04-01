@@ -33,7 +33,7 @@ func (i Info) GetMeta() (b []byte) {
 
 // todo: transfer this logic into convenience functions
 
-//SetTags
+//SetTags sets one or more tags
 func (i *Info) SetTags(o ...Tags) {
 	if i.tags == nil {
 		var tags []Tags
@@ -44,7 +44,7 @@ func (i *Info) SetTags(o ...Tags) {
 	}
 }
 
-//CheckTags
+//CheckTags check if a particular group of tags exist
 func (i Info) CheckTags(o ...Tags) bool {
 	if len(o) == 0 {
 		if i.tags == nil {
@@ -62,7 +62,7 @@ func (i Info) CheckTags(o ...Tags) bool {
 	return true
 }
 
-//RemoveTag
+//RemoveTag removes a particular tag
 func (i *Info) RemoveTag(o Tags) bool {
 	if i.tags == nil {
 		return false
@@ -80,8 +80,7 @@ func (i *Info) RemoveTag(o Tags) bool {
 	return found
 }
 
-
-//CheckTag
+//CheckTag checks if a particular tag exists
 func (i Info) CheckTag(o Tags) bool {
 	if i.tags == nil {
 		return false

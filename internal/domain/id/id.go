@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-// ID defines how we're going to handle IDs in this system
+//ID defines how we're going to handle IDs in this system
 type ID struct {
 	uuid uuid.UUID
 }
 
-// NewID creates and return a new v4 UUID we would like the IDs to have a timestamp yes
+//NewID creates and return a new v4 UUID we would like the IDs to have a timestamp yes
 func NewID() (i ID, err error) {
 	if id, err := uuid.NewUUID(); err == nil {
 		i.uuid = id
