@@ -7,6 +7,7 @@ import (
 	"syscall"
 )
 
+//Signal watches for os signal and calls function, preferably quit function
 func Signal(q func()) {
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGTERM, syscall.SIGINT)
@@ -19,6 +20,7 @@ func Signal(q func()) {
 	}
 }
 
+//Printer things that come in []byte
 func Printer(in chan []byte) (q func()) {
 	quit := make(chan struct{})
 	q = func() {
