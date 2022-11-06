@@ -1,6 +1,5 @@
 # Proto-Order-Data
 
-[![test and build](https://github.com/insan1k/proto-order-data/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/insan1k/proto-order-data/actions/workflows/ci-workflow.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/insan1k/proto-order-data)](https://goreportcard.com/report/github.com/insan1k/proto-order-data)
 [![Coverage Status](https://coveralls.io/repos/github/insan1k/proto-order-data/badge.svg?branch=master)](https://coveralls.io/github/insan1k/proto-order-data?branch=master)
 
